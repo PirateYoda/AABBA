@@ -66,6 +66,8 @@ public class BarrelBlock extends Block implements BlockEntityProvider {
         {
             if (player.isSpectator()) return ActionResult.PASS;
 
+            //TODO: if using appropriate tool for the block then don't remove, just break it
+
             if (world.getBlockState(pos).isOf(instance)) {
                 BarrelBlockEntity inv = (BarrelBlockEntity) world.getBlockEntity(pos);
 
