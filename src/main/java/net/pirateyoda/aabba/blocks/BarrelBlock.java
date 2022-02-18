@@ -32,7 +32,6 @@ public class BarrelBlock extends Block implements BlockEntityProvider {
         super(settings);
     }
 
-
     @Override
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
         BarrelBlockEntity inv = (BarrelBlockEntity) blockEntity;
@@ -52,6 +51,9 @@ public class BarrelBlock extends Block implements BlockEntityProvider {
         //Creative mode?
 
         BarrelBlockEntity blockEntity = (BarrelBlockEntity) world.getBlockEntity(pos);
+
+        if (player.getStackInHand(Hand.MAIN_HAND).isEmpty())
+            blockEntity.addFromInventory(player.getInventory());
 
         blockEntity.addItems(player.getStackInHand(Hand.MAIN_HAND));
 

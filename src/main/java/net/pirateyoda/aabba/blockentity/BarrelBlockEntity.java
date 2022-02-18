@@ -16,6 +16,8 @@ import net.pirateyoda.aabba.AabbaMod;
 import net.pirateyoda.aabba.util.ItemUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 public class BarrelBlockEntity extends BlockEntity implements Inventory {
     private final int max_capacity = 32 * 64;  //max number of items
     private int stored_count = 0;
@@ -180,4 +182,15 @@ public class BarrelBlockEntity extends BlockEntity implements Inventory {
         stored_count = 0;
         storedStack = ItemStack.EMPTY;
     }
+
+    public void addFromInventory(Inventory inventory) {
+        if (isEmpty()
+                || inventory.isEmpty()
+                || !inventory.containsAny(Set.of(storedStack.getItem())))
+            return;
+        for (int idx = inventory.size() -1; idx >=0; --idx) {
+                addItems(inventory.getStack(idx));
+        }
+    }
+
 }
