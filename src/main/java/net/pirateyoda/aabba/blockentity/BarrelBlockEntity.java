@@ -2,7 +2,9 @@ package net.pirateyoda.aabba.blockentity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
@@ -11,14 +13,20 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.pirateyoda.aabba.AabbaMod;
-import net.pirateyoda.aabba.util.ImplementedInventory;
 import net.pirateyoda.aabba.util.ItemUtils;
 import org.jetbrains.annotations.Nullable;
 
-public class BarrelBlockEntity extends BlockEntity implements ImplementedInventory {
+public class BarrelBlockEntity extends BlockEntity implements Inventory {
     private final int max_capacity = 32 * 64;  //max number of items
     private int stored_count = 0;
     private ItemStack storedStack = ItemStack.EMPTY;
+
+
+    public BarrelBlockEntity(BlockPos pos, BlockState state) {
+        super(AabbaMod.BARREL_BLOCK_ENTITY, pos, state);
+
+        this.clear();
+    }
 
     //Add items to the inventory
     public void addItems(ItemStack stack) {
@@ -83,8 +91,42 @@ public class BarrelBlockEntity extends BlockEntity implements ImplementedInvento
     }
 
     @Override
+    public int size() {
+        return max_capacity;
+    }
+
+    @Override
     public boolean isEmpty() {
         return freeSpace() == max_capacity;
+    }
+
+    @Override
+    public ItemStack getStack(int slot) {
+        if (!isEmpty()) {
+            storedStack.setCount(getStackSize());
+        }
+
+        return storedStack;
+    }
+
+    @Override
+    public ItemStack removeStack(int slot, int amount) {
+        return removeItems(amount);
+    }
+
+    @Override
+    public ItemStack removeStack(int slot) {
+        return removeItems(storedStack.getItem().getMaxCount());
+    }
+
+    @Override
+    public void setStack(int slot, ItemStack stack) {
+        addItems(stack);
+    }
+
+    @Override
+    public boolean canPlayerUse(PlayerEntity player) {
+        return true;
     }
 
     private boolean isFull() {
@@ -97,10 +139,6 @@ public class BarrelBlockEntity extends BlockEntity implements ImplementedInvento
 
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
-
-    public BarrelBlockEntity(BlockPos pos, BlockState state) {
-        super(AabbaMod.BARREL_BLOCK_ENTITY, pos, state);
-    }
 
     @Override
     public void readNbt(NbtCompound nbt) {
@@ -127,10 +165,6 @@ public class BarrelBlockEntity extends BlockEntity implements ImplementedInvento
         return createNbt();
     }
 
-    @Override
-    public DefaultedList<ItemStack> getItems() {
-        return items;
-    }
     public boolean isSameType(ItemStack inputStack) {
 
         if (inputStack != ItemStack.EMPTY) {
@@ -141,4 +175,9 @@ public class BarrelBlockEntity extends BlockEntity implements ImplementedInvento
         return false;
     }
 
+    @Override
+    public void clear() {
+        stored_count = 0;
+        storedStack = ItemStack.EMPTY;
+    }
 }
