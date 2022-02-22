@@ -3,7 +3,6 @@ package net.pirateyoda.aabba.blockentity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -45,6 +44,8 @@ public class BarrelBlockEntity extends BlockEntity implements Inventory {
         } else {
             stack.setCount(0);
         }
+
+        markDirty();
     }
 
     public ItemStack removeItems(int count) {
@@ -61,6 +62,8 @@ public class BarrelBlockEntity extends BlockEntity implements Inventory {
         if (isEmpty()) storedStack = ItemStack.EMPTY;
 
         System.out.println("removed: " + count + "  stored count: " + stored_count);
+
+        markDirty();
 
         return ret;
     }
@@ -84,6 +87,8 @@ public class BarrelBlockEntity extends BlockEntity implements Inventory {
         //not really necessary but..
         stored_count = 0;
         storedStack = ItemStack.EMPTY;
+
+        markDirty();
 
         return ret;
     }
@@ -145,20 +150,33 @@ public class BarrelBlockEntity extends BlockEntity implements Inventory {
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
-        DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
-        Inventories.readNbt(nbt, items);
-        storedStack = items.get(0).copy();
+        storedStack = ItemStack.EMPTY;
+
+        stored_count = nbt.getInt("stored_count");
+        if (!nbt.getBoolean("isEmpty")) {
+            storedStack = ItemStack.fromNbt(nbt.getCompound("storedStack"));
+        }
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt) {
-        Inventories.writeNbt(nbt, DefaultedList.ofSize(1, storedStack));
+
+        nbt.putInt("stored_count", stored_count);
+        nbt.putBoolean("isEmpty", this.isEmpty());
+        if (!isEmpty()) {
+            NbtCompound nbtCompound = new NbtCompound();
+            storedStack.writeNbt(nbtCompound);
+            nbt.put("storedStack", nbtCompound);
+        }
+
         super.writeNbt(nbt);
     }
 
     @Nullable
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        NbtCompound nbtTag = new NbtCompound();
+        writeNbt(nbtTag);
         return BlockEntityUpdateS2CPacket.create(this);
     }
 
@@ -191,6 +209,8 @@ public class BarrelBlockEntity extends BlockEntity implements Inventory {
         for (int idx = inventory.size() -1; idx >=0; --idx) {
                 addItems(inventory.getStack(idx));
         }
+
+        markDirty();
     }
 
 }
