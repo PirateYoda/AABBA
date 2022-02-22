@@ -2,10 +2,8 @@ package net.pirateyoda.aabba;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.registry.Registry;
 import net.pirateyoda.aabba.blockentity.BarrelBlockEntity;
 import net.pirateyoda.aabba.blocks.BarrelBlock;
 import org.slf4j.Logger;

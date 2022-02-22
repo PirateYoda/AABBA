@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "net.pirateyoda.aabba.AabbaMod"
+    ],
+    "client": [
+      "net.pirateyoda.aabba.AabbaModClient"
     ]
   },
   "mixins": [
