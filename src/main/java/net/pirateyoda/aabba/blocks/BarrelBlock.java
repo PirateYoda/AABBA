@@ -58,7 +58,7 @@ public class BarrelBlock extends Block implements BlockEntityProvider {
     @SuppressWarnings("deprecation")
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.isClient) return ActionResult.SUCCESS;
+    //    if (world.isClient) return ActionResult.SUCCESS;
         //Creative mode?
 
         BarrelBlockEntity blockEntity = (BarrelBlockEntity) world.getBlockEntity(pos);
