@@ -12,6 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -43,6 +45,15 @@ public class BarrelBlock extends Block implements BlockEntityProvider {
         super.afterBreak(world, player, pos, state, blockEntity, stack);
     }
 
+    @Override
+    public MutableText getName() {
+        return new TranslatableText(getTranslationKey());
+    }
+
+    @Override
+    public String getTranslationKey() {
+        return "block.aabba.barrel.tooltip";
+    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -51,6 +62,7 @@ public class BarrelBlock extends Block implements BlockEntityProvider {
         //Creative mode?
 
         BarrelBlockEntity blockEntity = (BarrelBlockEntity) world.getBlockEntity(pos);
+        if (null == blockEntity) return ActionResult.SUCCESS;
 
         if (player.getStackInHand(Hand.MAIN_HAND).isEmpty())
             blockEntity.addFromInventory(player.getInventory());
@@ -70,6 +82,7 @@ public class BarrelBlock extends Block implements BlockEntityProvider {
 
             if (world.getBlockState(pos).isOf(instance)) {
                 BarrelBlockEntity inv = (BarrelBlockEntity) world.getBlockEntity(pos);
+                if (null == inv) return ActionResult.PASS;
 
                 int stack_size = (player.isSneaking()) ? 1 : inv.getStackSize();
                 player.getInventory().offerOrDrop(inv.removeItems(stack_size));
