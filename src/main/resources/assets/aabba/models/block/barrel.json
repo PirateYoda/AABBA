@@ -1,7 +1,9 @@
 {
-  "parent": "block/cube_all",
+  "parent": "aabba:block/side",
   "textures": {
-    "all": "aabba:block/barrel"
+    "bottom": "minecraft:block/barrel_bottom",
+    "top": "minecraft:block/barrel_top",
+    "side": "minecraft:block/barrel_side"
   }
 }
 

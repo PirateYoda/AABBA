@@ -1,5 +1,9 @@
 {
   "variants": {
-    "": { "model": "aabba:block/barrel" }
+    "facing=north": { "model": "aabba:block/barrel", "uvlock": true },
+    "facing=east":  { "model": "aabba:block/barrel", "y":  90, "uvlock": true },
+    "facing=south": { "model": "aabba:block/barrel", "y": 180, "uvlock": true },
+    "facing=west":  { "model": "aabba:block/barrel", "y": 270, "uvlock": true }
+
   }
 }
