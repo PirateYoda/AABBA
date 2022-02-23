@@ -1,4 +1,4 @@
-package net.pirateyoda.aabba.renderers;
+package net.pirateyoda.aabba.client.render;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -12,6 +12,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3f;
 import net.pirateyoda.aabba.blockentity.BarrelBlockEntity;
+
+import java.util.Objects;
 
 public class BarrelEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
     // A jukebox itemstack
@@ -29,7 +31,7 @@ public class BarrelEntityRenderer<T extends BlockEntity> implements BlockEntityR
                 ItemStack stack = barrelBE.getStack(0);
 
                 // Calculate the current offset in the y value
-                double offset = Math.sin((blockEntity.getWorld().getTime() + tickDelta) / 8.0) / 4.0;
+                double offset = Math.sin((Objects.requireNonNull(blockEntity.getWorld()).getTime() + tickDelta) / 8.0) / 4.0;
                 // Move the item
                 matrices.translate(0.5, 1.25 + offset, 0.5);
 
