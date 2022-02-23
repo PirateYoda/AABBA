@@ -1,9 +1,13 @@
 {
-  "parent": "aabba:block/side",
+  "parent": "minecraft:block/cube_directional",
   "textures": {
-    "bottom": "minecraft:block/barrel_bottom",
-    "top": "minecraft:block/barrel_top",
-    "side": "minecraft:block/barrel_side"
+    "particle": "aabba:block/drawers_oak_trim",
+    "north": "aabba:block/drawers_oak_side",
+    "south": "aabba:block/drawers_oak_trim",
+    "east": "aabba:block/drawers_oak_trim",
+    "west": "aabba:block/drawers_oak_trim",
+    "up": "aabba:block/drawers_oak_trim",
+    "down": "aabba:block/drawers_oak_trim"
   }
 }
 
