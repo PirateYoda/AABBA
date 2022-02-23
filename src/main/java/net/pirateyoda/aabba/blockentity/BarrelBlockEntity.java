@@ -144,6 +144,8 @@ public class BarrelBlockEntity extends BlockEntity implements Inventory {
         return max_capacity - stored_count;
     }
 
+    public int getStoredAmount() {return stored_count;}
+
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(1, ItemStack.EMPTY);
 
